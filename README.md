@@ -14,12 +14,9 @@ AVFoundation은 time-based audiovisual 미디어를 생성하는데 사용할 �
 
 > 디테일한 수준의 작업이라고 소개 된 부분인데 이 부분에 대해서는 아직은 경험이 부족한 탓인지 와닿지는 않네요. 추후에 설명을 보강하도록 하겠습니다. 
 
-AVKit은 iOS와 OSX에서 각각 UIKit과 AppKit 위에 위치하고 AVFoundation은 UIKit과 AppKit 아래에 위치합니다. 그 아래에는 Corea Audio, Core Media, Core Animation 등이 위치합니다.
+AVKit은 iOS와 OS X에서 각각 UIKit과 AppKit 위에 위치하고 AVFoundation은 UIKit과 AppKit 아래에 위치합니다. 그 아래에는 Corea Audio, Core Media, Core Animation 등이 위치합니다.
 
-|      AVKit       |      AVKit       |
-| :--------------: | :--------------: |
-|    **UIKit**     |    **AppKit**    |
-| **AVFoundation** | **AVFoundation** |
+<img src="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Art/frameworksBlockDiagram_2x.png" style="zoom:40%"/> <img src="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Art/frameworksBlockDiagramOSX_2x.png" style="zoom:40%"/>
 
 고수준을 요구하는 작업이 아닌 일반적인 미디어 관련 작업에 대해서는 상위 수준의 프레임워크를 사용해야 합니다. 즉 단순히 영상을 재생하고 싶다면 AVKit 프레임워크를 사용하면 됩니다!
 
@@ -38,11 +35,11 @@ AVFoundation 프레임워크는 두 가지 종류의 API를 제공합니다. 한
 
 ### Asset 사용하기
 
-Asset은 파일이나 사용자의 포토 라이브러리 같은 저장소에 위치한 미디어로부터 가져올 수 있습니다. 예를 들어 Movie Asset을 갖고 있다면 이로부터 이미지를 추출할 수 있으며 다른 포맷으로 변환할 수 있고 컨텐츠를 다듬을 수도 있습니다. 하지만 Asset 객체를 만들었다고 해서 그 즉시 해당 Asset에 대한 모든 정보를 가져올 수는 없습니다. 
+asset은 파일이나 사용자의 포토 라이브러리 같은 저장소에 위치한 미디어로부터 가져올 수 있습니다. 예를 들어 Movie asset을 갖고 있다면 이로부터 이미지를 추출할 수 있으며 다른 포맷으로 변환할 수 있고 컨텐츠를 다듬을 수도 있습니다. 하지만 asset 객체를 만들었다고 해서 그 즉시 해당 Asset에 대한 모든 정보를 가져올 수는 없습니다. 
 
 #### Asset 객체 생성 (Creating and Asset Object)
 
-사용하려는 Asset을 리소스의 URL로 식별할 수 있다면 다음과 같이 `AVURLAsset` 생성자를 이용해서 Asset 객체를 생성할 수 있습니다. 즉 URL로 Asset을 생성할 수 있다는 것입니다.
+사용하려는 asset을 리소스의 URL로 식별할 수 있다면 다음과 같이 `AVURLAsset` 생성자를 이용해서 asset 객체를 생성할 수 있습니다. 즉 URL로 Asset을 생성할 수 있다는 것입니다.
 
 ```swift
 let url = URL(string: "A URL that identifies an audiovisual asset such as a movie file")
@@ -53,7 +50,9 @@ let asset = AVURLAsset(url: url, options: nil)
 
 `AVURLAsset` 생성자는 두 번째 매개변수로 Key-Value 형태의 딕셔너리 타입 옵션 값을 받습니다. 이 옵션 값에 해당하는 딕셔너리로 `AVAsset` 객체를 생성하는데 여러 옵션을 부여할 수 있습니다. 
 
-이러한 옵션들을 통해 `AVAsset` 객체를 생성하면 생성된 직후 바로 특정한 임의의 시간에 대해 디테일한 접근이 가능합니다. 또한 정확한 총 재생 시간 정보와 함께 `AVAsset` 객체를 생성하는 것도 가능합니다. 하지만 이렇게 객체를 생성한 직후 시간을 바탕으로 하는 정교한 작업을 가능케 하기 위해서는 객체가 생성되는 과정에 상당한 오버헤드를 발생시키는 수행 작업이 발생합니다. 그렇기 때문에 일반적으론 대략적인 재생 시간을 사용하는 것이 보다 덜 부담스러운 작업이며 적합한 방법입니다. 
+이러한 옵션들을 통해 `AVAsset` 객체를 생성하면 생성된 직후 바로 특정한 임의의 시간에 대해 디테일한 접근이 가능합니다. 또한 정확한 총 재생 시간 정보와 함께 `AVAsset` 객체를 생성하는 것도 가능합니다. 
+
+하지만 이렇게 객체를 생성한 직후 시간을 바탕으로 하는 정교한 작업을 가능케 하기 위해서는 객체가 생성되는 과정에 상당한 오버헤드를 발생시키는 수행 작업이 발생합니다. 그렇기 때문에 일반적으론 대략적인 재생 시간을 사용하는 것이 보다 덜 부담스러운 작업이며 적합한 방법입니다. 
 
 ```swift
 let url = URL(string: "A URL that identifies an audiovisual asset such as a movie file")
@@ -113,7 +112,7 @@ if asset.tracks(withMediaType: video).count > 0 {
 
 ### 비디오 다듬고 변환하기 (Trimming and Transcoding a Movie)
 
-`AVAssetExportSession` 객체를 이용하여 Asset(비디오)의 포맷을 다른 포맷으로 변환시킬 수 있으며 해당 Asset을을 다듬을 수도 있습니다. `AVAssetExportSession` 객체는 이러한 변환 과정을 제어하는 객체로 비동기적으로 해당 Asset을 변환합니다. 그리고 변환된 객체를 반환합니다. 변환할 Asset과 변환에 사용할 옵션들과 함께  `AVAssetExportSession` 객체를 초기화합니다. 이렇게 생성된 객체로 출력 결과물의 URL과 파일의 타입들을 명시해주고 메타데이터와 네트워크 사용에 맞게 최적화되어야 하는지에 대한 설정을 선택적으로 지정할 수 있습니다.
+`AVAssetExportSession` 객체를 이용하여 Asset(비디오)의 포맷을 다른 포맷으로 변환시킬 수 있으며 해당 Asset을을 다듬을 수도 있습니다. `AVAssetExportSession` 객체는 이러한 변환 과정을 제어하는 객체로 비동기적으로 해당 asset을 변환합니다. 그리고 변환된 객체를 반환합니다. 변환할 asset과 변환에 사용할 옵션들과 함께  `AVAssetExportSession` 객체를 초기화합니다. 이렇게 생성된 객체로 출력 결과물의 URL과 파일의 타입들을 명시해주고 메타데이터와 네트워크 사용에 맞게 최적화되어야 하는지에 대한 설정을 선택적으로 지정할 수 있습니다.
 
 ```swift
 let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) //변환활 Asset과 변환에 대한 옵션을 지정
@@ -147,3 +146,33 @@ exporter?.exportAsynchronously(completionHandler: {
 
 이런 상황에서는 반드시 변환의 실패를 사용자에게 알려야 하고 사용자로 하여금 다시 변환 과정을 시작할 수 있게끔 해야 합니다.
 
+---
+
+### Playback
+
+> Playback의 의미를 일종의 재생과 관련된 행위들이라고 이해하시고 읽어주시기 바랍니다. 이런 재생과 관련된 행위들이란 단순히 시간 순서대로 재생하는 것뿐만 아니라 녹음, 녹화 등도 포함되어 있습니다.
+
+`AVPlayer` 객체는 Asset의 전반적인 playback을 조절하는데 사용하고, `AVPlayerItem` 객체는 Asset의 Presentaion state를 관리하는데 사용됩니다. 그리고 `AVPlayerItemTrack` 은 asset 안 각각의 track의 Presentation state를 관리하는데 사용합니다. 마지막으로 영상을 출력하기 위해서는 `AVPlayerLayer` 객체를 사용합니다.
+
+### Playing Assets
+
+`player` 는 컨트롤러 객체로 재생과 정지 그리고 특정 시간대로 이동하는 등의 asset의 playback을 관리할 때 사용합니다. 
+
+- `AVPlayer` - 단일 asset을 관리
+- `AVQueuePlayer` - 여러 asset을 순서대로 관리
+
+또한 `player`는 현재 재생 중인 asset에 대한 상태 정보를 제공하므로 이를 바탕으로 해당 정보에 맞추어 UI를 동기화 작업도 가능합니다. 이런 동기화 작업의 대표적인 예는 바로 `player` 의 출력물을 `AVPlayerLayer` 혹은 `AVSynchronizedLayer` 와 같은 Core Animation Layer를 통해 보여주는 작업이 있습니다.
+
+재생을 원하는 asset을 바로 `AVPlayer` 객체에 전달하지는 않습니다. 이를 위해서는 `AVPlayerItem`이라는 객체를 사용해서 전달합니다. `AVPlayerItem` 객체는 본인에게 할당된 asset에 대한 Presentation state를 관리합니다. 또한 `AVPlayerItem` 안에는 `AVPlayerItemTrack` 객체들도 존재하는데 이들은 `AVPlayerItem` 객체가 갖고 있는 asset의 track들을 관리합니다. 이들의 관계도는 다음과 같습니다. 
+
+<img src="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Art/avplayerLayer_2x.png" style="zoom:50%" />
+
+그리고 다음 그림을 살펴보도록 하겠습니다. 다음 그림은 동일한 asset을 다른 `AVPlayer` 객체가 동시에 재생하고 있지만 서로 다른 랜더링 방법을 통해 서로 다른 결과물을 출력할 수 있다는 것을 묘사하고 있습니다. 
+
+위에서 언급한 `AVPlayerItem` 안의 `AVPlayerItemTrack` 객체를 이용해 같은 asset이지만 track들을 조정해 밑의 예제와 같이 영상 asset 중 video 트랙만 활성화시키고 audio 트랙은 비활성화시키는 등의 편집이 가능해집니다. 
+
+<img src="https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/AVFoundationPG/Art/playerObjects_2x.png" style="zoom:50%"/>
+
+이런 `AVPlayerItem` 객체는 로컬에  존재하는 asset을 이용하여 생성할 수도 있지만 서버와 같이 다른 곳에 위치하는 asset 역시 URL을 통해 생성할 수 있습니다.
+
+`AVAsset`과 마찬가지로 `AVPlayerItem` 객체를 생성했다고 그 즉시 바로 사용할 수 있는 것은 아닙니다. 생성한 후 객체의 `status` 프로퍼티를 활용해서 현재 사용할 준비가 되었는지를 확인해주어야 합니다.
