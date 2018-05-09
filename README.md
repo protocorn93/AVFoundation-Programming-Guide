@@ -238,7 +238,7 @@ if let artworkItem = artworkItems.first {
 `AVPlayer` 와 `AVPlayerItem` 은 비시각적인 객체로 그들 스스로 화면에 영상을 출력하지 못합니다. 그렇기 때문에 이들을 화면에 출력시킬 수 있는 옵션은 두 가지가 있습니다.
 
 - **AVKit** : 가장 좋은 방법은 AVKit 프레임워크를 활용하는 건데 iOS나 tvOS에선 `AVPlayerViewController` 를 macOS에선 `AVPlayerView` 를 사용하는 것입니다. 이 객체들은 비디오 컨텐츠를 보여주고 재생에 관련된 모든 기능들이 완벽하게 구현되어 제공됩니다. 
-- **AVPlayerLayer **: 비디오 컨텐츠를 재생하는 플레이어를 커스터마이징 하여 여러 기능들을 직접 추가하여 만들고 싶다면 AVFoundation에서 제공하고 Core Animation의 `CALayer` 를 상속받은 `AVPlayerLayer`를 사용하면 됩니다. 이는 재생에 관련된 어떠한 기능도 제공되지 않고 오직 화면 출력 기능만을 제공하기 때문에 미디어 재생에 관한 기능들은 직접 모두 구현해주어야 합니다.
+- **AVPlayerLayer**: 비디오 컨텐츠를 재생하는 플레이어를 커스터마이징 하여 여러 기능들을 직접 추가하여 만들고 싶다면 AVFoundation에서 제공하고 Core Animation의 `CALayer` 를 상속받은 `AVPlayerLayer`를 사용하면 됩니다. 이는 재생에 관련된 어떠한 기능도 제공되지 않고 오직 화면 출력 기능만을 제공하기 때문에 미디어 재생에 관한 기능들은 직접 모두 구현해주어야 합니다.
 
 
 
@@ -301,8 +301,7 @@ func prepareToPlay() {
  
     // Create a new AVPlayerItem with the asset and an
     // array of asset keys to be automatically loaded
-    playerItem = AVPlayerItem(asset: asset,
-                              automaticallyLoadedAssetKeys: requiredAssetKeys)
+    playerItem = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: requiredAssetKeys)
  
     // Register as an observer of the player item's status property
     playerItem.addObserver(self,
@@ -364,7 +363,7 @@ AVFoundation의 일부를 포함한 애플의 프레임워크에서 시간은 �
 
 이러한 부동소수점의 부정확성을 해결하고자 AVFoundation은 시간을 Core Media 프레임워크의 `CMTime ` 타입을 이용해 표현합니다. 
 
-> 저는 `CMTime  `을 블로그에 소개한 적이 있습니다. 이때의 예시로 AVFoundation의 기능들을 사용했으니 해당 [포스팅](http://baked-corn.tistory.com/95)을먼저 보고 오시는 것을 추천드립니다.
+> 저는 `CMTime  `을 블로그에 소개한 적이 있습니다. 이때의 예시로 AVFoundation의 기능들을 사용했으니 해당 [포스팅](http://baked-corn.tistory.com/95)을 먼저 보고 오시는 것을 추천드립니다.
 
 Core Media는 low-level의 C 프레임워크입니다. 대부분의 기능을 AVFoundation 같이 애플의 High-level 프레임워크의 인터페이스를 통해 사용합니다. 하지만 `CMTime`은 Core Media를 통해 직접적으로 다룰 수 있는 구조체 데이터 타입입니다.
 
